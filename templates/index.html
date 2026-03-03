@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🪦 KOL Graveyard — Where Shills Go to Die</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body class="graveyard-bg">
+    <div class="fog"></div>
+    
+    <main class="container">
+        <!-- Header -->
+        <header class="hero">
+            <h1 class="title">🪦 KOL GRAVEYARD 🪦</h1>
+            <p class="subtitle">Where web3 shills come to rest. Exposing paid promotions, one tombstone at a time.</p>
+            <div class="candle"></div>
+        </header>
+
+        <!-- Search Section -->
+        <section class="burial-ground">
+            <div class="search-container">
+                <h2 class="section-title">Dig Up a Shill</h2>
+                <p class="section-desc">Enter an X handle. We'll analyze their paid promo history and bury them accordingly.</p>
+                
+                <form action="/roast" method="POST" class="search-form">
+                    <div class="input-group">
+                        <span class="at-sign">@</span>
+                        <input type="text" 
+                               name="handle" 
+                               id="handle-input"
+                               placeholder="crypto_shiller_3000" 
+                               required
+                               pattern="[A-Za-z0-9_]+"
+                               maxlength="15"
+                               autocomplete="off">
+                        <button type="submit" class="bury-btn">
+                            <span class="btn-text">Bury Them</span>
+                            <span class="btn-icon">⚰️</span>
+                        </button>
+                    </div>
+                    <small class="hint">Just the handle. No @ needed. We don't judge (we do).</small>
+                </form>
+            </div>
+        </section>
+
+        <!-- Quick Stats -->
+        <section class="stats-bar">
+            <div class="stat">
+                <span class="stat-number" id="buried-count">0</span>
+                <span class="stat-label">Shills Buried</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" id="shill-count">0</span>
+                <span class="stat-label">Promos Exposed</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" id="casualty-count">0</span>
+                <span class="stat-label">Projects Dead</span>
+            </div>
+        </section>
+
+        <!-- Recent Burials -->
+        <section class="recent-burials">
+            <h2 class="section-title">Fresh Graves</h2>
+            <p class="section-desc">Recent arrivals to the graveyard. Rest in pieces.</p>
+            
+            <div class="tombstone-grid" id="recent-tombstones">
+                <!-- Populated by JS -->
+                <div class="loading-tomb">Digging up recent burials...</div>
+            </div>
+            
+            <div class="text-center" style="margin-top: 2rem;">
+                <a href="/graveyard" class="btn-secondary">View Full Graveyard →</a>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="explanation">
+            <h2 class="section-title">How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <span class="step-num">1</span>
+                    <h3>Enter Handle</h3>
+                    <p>Drop any web3 KOL's X handle into the search.</p>
+                </div>
+                <div class="step">
+                    <span class="step-num">2</span>
+                    <h3>We Analyze</h3>
+                    <p>Scan their tweets for paid promos, #ad tags, and shill patterns.</p>
+                </div>
+                <div class="step">
+                    <span class="step-num">3</span>
+                    <h3>Get Roasted</h3>
+                    <p>Receive a savage but fair roast based on their shill history.</p>
+                </div>
+                <div class="step">
+                    <span class="step-num">4</span>
+                    <h3>Visit Graveyard</h3>
+                    <p>They get a permanent tombstone in the hall of shame.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Disclaimer -->
+        <footer class="disclaimer">
+            <p>🪦 The KOL Graveyard is satire. Data is for entertainment purposes. Don't be a shill. 🪦</p>
+            <p class="built-by">Built by <a href="https://twitter.com/thegamingstrategist" target="_blank">Archon</a> while Russ slept</p>
+        </footer>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        // Load recent burials on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadRecentBurials();
+            loadStats();
+        });
+    </script>
+</body>
+</html>

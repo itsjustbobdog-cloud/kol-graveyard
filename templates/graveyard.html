@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🪦 The Graveyard — All Buried KOLs</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body class="graveyard-bg">
+    <div class="fog"></div>
+    
+    <main class="container">
+        <!-- Navigation -->
+        <nav class="nav">
+            <a href="/" class="nav-link">← Back to Entrance</a>
+        </nav>
+
+        <!-- Header -->
+        <header class="graveyard-header">
+            <div class="moon">🌙</div>
+            <h1>The Full Graveyard</h1>
+            <p class="subtitle">Where shills rest for eternity. May their followers forgive them.</p>
+            
+            <!-- Cemetery Stats -->
+            <div class="cemetery-stats">
+                <div class="cemetery-stat">
+                    <div class="stat-icon">🪦</div>
+                    <div class="stat-details">
+                        <span class="big-number">{{ stats.total_buried }}</span>
+                        <span class="stat-name">Shills Buried</span>
+                    </div>
+                </div>
+                <div class="cemetery-stat">
+                    <div class="stat-icon">💀</div>
+                    <div class="stat-details">
+                        <span class="big-number">{{ stats.total_shills }}</span>
+                        <span class="stat-name">Promos Exposed</span>
+                    </div>
+                </div>
+                <div class="cemetery-stat">
+                    <div class="stat-icon">⚰️</div>
+                    <div class="stat-details">
+                        <span class="big-number">{{ stats.total_casualties }}</span>
+                        <span class="stat-name">Projects Dead</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Graveyard Grid -->
+        <section class="graveyard-grid-section">
+            {% if residents %}
+            <div class="tombstone-grid">
+                {% for resident in residents %}
+                <a href="/r/{{ resident.handle }}" class="tombstone-link">
+                    <div class="tombstone-card mini">
+                        <div class="tombstone-shape">
+                            <div class="tombstone-header">
+                                <span class="cross">✝</span>
+                            </div>
+                            <div class="tombstone-body">
+                                <h3 class="deceased-name">{{ resident.display_name or resident.handle }}</h3>
+                                <p class="deceased-handle">@{{ resident.handle }}</p>
+                                
+                                <div class="mini-stats">
+                                    <span class="mini-stat" title="Paid promos">📢 {{ resident.promo_count }}</span>
+                                    <span class="mini-stat dead" title="Dead projects">💀 {{ resident.dead_count }}</span>
+                                </div>
+                                
+                                <div class="death-info small">
+                                    <span>{{ resident.death_date }}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="tombstone-footer">
+                                <span class="view-roast">View Roast →</span>
+                            </div>
+                        </div>
+                        <div class="grass-stripe">🌿 🍂 🌱</div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-graveyard">
+                <div class="empty-icon">🪦</div>
+                <h2>The Graveyard is Empty</h2>
+                <p>No shills buried yet. Be the first to send someone to their digital grave.</p>
+                <a href="/" class="btn-primary">Bury Someone →</a>
+            </div>
+            {% endif %}
+        </section>
+
+        <!-- Death Meter -->
+        {% if residents %}
+        <section class="death-meter-section">
+            <h2 class="section-title">Shill Severity Scale</h2>
+            <div class="severity-chart">
+                <div class="severity-row">
+                    <span class="severity-label">🟢 Casual</span>
+                    <div class="severity-bar">
+                        <div class="severity-fill" style="width: 25%; background: #4ade80;"></div>
+                    </div>
+                    <span class="severity-desc">Occasional #ad, mostly authentic</span>
+                </div>
+                <div class="severity-row">
+                    <span class="severity-label">🟡 Suspect</span>
+                    <div class="severity-bar">
+                        <div class="severity-fill" style="width: 50%; background: #facc15;"></div>
+                    </div>
+                    <span class="severity-desc">Regular paid content, some are honest</span>
+                </div>
+                <div class="severity-row">
+                    <span class="severity-label">🟠 Habitual</span>
+                    <div class="severity-bar">
+                        <div class="severity-fill" style="width: 75%; background: #fb923c;"></div>
+                    </div>
+                    <span class="severity-desc">Timeline is a billboard</span>
+                </div>
+                <div class="severity-row">
+                    <span class="severity-label">🔴 Terminal</span>
+                    <div class="severity-bar">
+                        <div class="severity-fill" style="width: 100%; background: #ef4444;"></div>
+                    </div>
+                    <span class="severity-desc">Professional shill, no survivors</span>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <footer class="disclaimer">
+            <p>🪦 The KOL Graveyard is satire. Data for entertainment. Don't be a shill. 🪦</p>
+        </footer>
+    </main>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🪦 {{ roast.handle }} — Buried in the KOL Graveyard</title>
+    <meta property="og:title" content="{{ roast.handle }} has been buried in the KOL Graveyard">
+    <meta property="og:description" content="{{ roast.roast_text }}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{{ url_for('static', filename='og-graveyard.png') }}">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body class="graveyard-bg">
+    <div class="fog"></div>
+    
+    <main class="container">
+        <!-- Navigation -->
+        <nav class="nav">
+            <a href="/" class="nav-link">← Back to Graveyard Entrance</a>
+        </nav>
+
+        <!-- Tombstone -->
+        <section class="tombstone-section">
+            <div class="tombstone-card main-tombstone">
+                <div class="tombstone-shape">
+                    <div class="tombstone-header">
+                        <span class="cross">✝</span>
+                    </div>
+                    <div class="tombstone-body">
+                        <h1 class="deceased-name">{{ roast.display_name or roast.handle }}</h1>
+                        <p class="deceased-handle">@{{ roast.handle }}</p>
+                        
+                        <div class="death-info">
+                            <span class="date-label">Died:</span>
+                            <span class="death-date">{{ roast.death_date }}</span>
+                        </div>
+                        
+                        <div class="epitaph">
+                            <span class="quote-mark">"</span>
+                            {{ roast.epitaph or 'Here lies credibility.' }}
+                            <span class="quote-mark">"</span>
+                        </div>
+                    </div>
+                    <div class="tombstone-base">
+                        <div class="grass">🌱 🌿 🍂</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Roast -->
+        <section class="roast-content">
+            <div class="roast-box">
+                <h2 class="roast-title">🔥 The Roast</h2>
+                <p class="roast-main">{{ roast.roast_text }}</p>
+                
+                {% if roast.specific_insults %}
+                <div class="specific-insults">
+                    <h3>Specific Crimes:</h3>
+                    <ul>
+                        {% for insult in roast.specific_insults %}
+                        <li>{{ insult }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- Stats -->
+        <section class="deceased-stats">
+            <h2 class="section-title">Final Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-value">{{ roast.promo_count }}</span>
+                    <span class="stat-label">Paid Promos</span>
+                </div>
+                <div class="stat-card dead">
+                    <span class="stat-value">{{ roast.dead_count }}</span>
+                    <span class="stat-label">Projects Dead</span>
+                </div>
+                <div class="stat-card survival">
+                    <span class="stat-value">{{ (roast.promo_count - roast.dead_count) }}</span>
+                    <span class="stat-label">Still Alive</span>
+                </div>
+                {% if roast.follower_count %}
+                <div class="stat-card">
+                    <span class="stat-value">{{ "{:,}".format(roast.follower_count) }}</span>
+                    <span class="stat-label">Followers (Victims)</span>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- Share -->
+        <section class="share-section">
+            <h2 class="section-title">Spread the Word</h2>
+            <p class="share-desc">They're already buried. Might as well invite people to the funeral.</p>
+            
+            <div class="share-buttons">
+                <a href="https://twitter.com/intent/tweet?text={{ ('🪦 Just buried @' + roast.handle + ' in the KOL Graveyard\n\n' + roast.roast_text[:100] + '...\n\nSee the full roast:') | urlencode }}&url={{ request.url | urlencode }}" 
+                   target="_blank" class="share-btn twitter">
+                    Share on X
+                </a>
+                <button class="share-btn copy" onclick="copyLink()">Copy Link</button>
+            </div>
+            
+            <div class="share-url">
+                <code id="share-link">{{ request.url }}</code>
+            </div>
+        </section>
+
+        <!-- More Burials -->
+        <section class="more-burials">
+            <h2 class="section-title">Bury Another</h2>
+            <form action="/roast" method="POST" class="search-form inline">
+                <div class="input-group">
+                    <span class="at-sign">@</span>
+                    <input type="text" name="handle" placeholder="Another shiller..." required pattern="[A-Za-z0-9_]+" maxlength="15">
+                    <button type="submit" class="bury-btn small">
+                        <span>Bury</span>
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <footer class="disclaimer">
+            <p>🪦 The KOL Graveyard is satire. Built by <a href="/">Archon</a> while Russ slept. 🪦</p>
+        </footer>
+    </main>
+
+    <script>
+        function copyLink() {
+            const link = document.getElementById('share-link').textContent;
+            navigator.clipboard.writeText(link).then(() => {
+                const btn = document.querySelector('.share-btn.copy');
+                const original = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(() => btn.textContent = original, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

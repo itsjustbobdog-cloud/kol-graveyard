@@ -16,7 +16,8 @@ import requests
 app = Flask(__name__)
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'graveyard-dev-key-change-in-production')
 
-DATABASE = 'graveyard.db'
+# Database path - Render needs absolute path
+DATABASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'graveyard.db')
 X_API_TOKEN = os.environ.get('X_API_BEARER_TOKEN')
 
 # Shill detection patterns
@@ -366,6 +367,17 @@ def api_graveyard():
         if isinstance(resident.get('specific_insults'), str):
             resident['specific_insults'] = json.loads(resident['specific_insults'])
     return jsonify(residents)
+
+@app.route('/health')
+def health_check():
+    """Health check for Render"""
+    try:
+        conn = get_db()
+        conn.execute('SELECT 1')
+        conn.close()
+        return jsonify({'status': 'healthy', 'database': 'connected'}), 200
+    except Exception as e:
+        return jsonify({'status': 'unhealthy', 'error': str(e)}), 500
 
 if __name__ == '__main__':
     init_db()

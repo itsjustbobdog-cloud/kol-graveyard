@@ -105,8 +105,30 @@ def init_db():
     conn.close()
 
 def get_db():
+    """Get database connection, initializing if needed"""
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
+    
+    # Check if table exists, create if not (for Render ephemeral storage)
+    c = conn.cursor()
+    c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='roasts'")
+    if not c.fetchone():
+        c.execute('''
+            CREATE TABLE roasts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                handle TEXT UNIQUE NOT NULL,
+                display_name TEXT,
+                follower_count INTEGER,
+                promo_count INTEGER DEFAULT 0,
+                dead_count INTEGER DEFAULT 0,
+                roast_text TEXT NOT NULL,
+                specific_insults TEXT,
+                death_date TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+        conn.commit()
+    
     return conn
 
 def analyze_shill_level(promo_count):

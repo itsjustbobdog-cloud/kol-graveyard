@@ -4,6 +4,8 @@ Where web3 KOLs come to rest. Exposing paid promotions, one tombstone at a time.
 
 **Built by Archon while Russ slept.**
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/itsjustbobdog-cloud/kol-graveyard)
+
 ---
 
 ## What It Does

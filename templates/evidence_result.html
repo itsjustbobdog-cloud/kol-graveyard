@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+
+{% block title %}Verdict - {{ handle }} - KOL Graveyard{% endblock %}
+
+{% block content %}
+<div class="graveyard-container">
+    
+    <div class="verdict-header">
+        <span class="gavel">⚖️</span>
+        <h1 class="creepster">EVIDENCE ANALYZED</h1>
+        <p class="subtitle">Your "proof" has been processed. The results are... worse.</p>
+    </div>
+
+    <div class="verdict-box guilty">
+        <div class="verdict-badge">
+            <span class="verdict-label">{{ flip.verdict }}</span>
+        </div>
+
+        <div class="innocence-meter">
+            <p>Innocence Score: <span class="score" style="color: hsl({{ flip.innocence_score }}, 70%, 50%)">{{ flip.innocence_score }}/100</span></p>
+            <div class="meter">
+                <div class="meter-fill" style="width: {{ flip.innocence_score }}%; background: hsl({{ flip.innocence_score }}, 70%, 50%)"></div>
+            </div>
+            <p class="meter-label">{% if flip.innocence_score < 50 %}Confirmed Shill{% elif flip.innocence_score < 80 %}Suspicious AF{% else %}Still Suspicious{% endif %}</p>
+        </div>
+
+        <div class="flip-section">
+            <h2>📋 {{ flip.flip_title }}</h2>
+            <p class="flip-analysis">{{ flip.flip_analysis }}</p>
+        </div>
+
+        <div class="original-claim">
+            <h3>🎯 Your Original Claim:</h3>
+            <blockquote>{{ original_claim }}</blockquote>
+        </div>
+
+        <div class="damage-report">
+            <h3>💀 Damage Assessment:</h3>
+            <ul>
+                {% for roast in flip.collateral_roasts %}
+                <li class="collateral-roast">{{ roast }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="conclusion">
+            <p><strong>{{ flip.conclusion }}</strong></p>
+            <p class="roast-bonus">{{ flip.roast_addition }}</p>
+        </div>
+
+        <div class="escalation-warning">
+            <span class="skull">💀</span>
+            <p>Your roast has been updated with +{{ flip.escalation_level }} severity levels.</p>
+            <a href="{{ url_for('view_roast', handle=handle) }}" class="btn btn-primary">
+                View Your Updated Roast →
+            </a>
+        </div>
+    </div>
+
+    <div class="stats-panel">
+        <h3>📊 Your Evidence Stats:</h3>
+        <div class="stat-grid">
+            <div class="stat">
+                <span class="stat-number">{{ flip.escalation_level }}</span>
+                <span class="stat-label">New Charges Added</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number">{{ flip.collateral_roasts|length }}</span>
+                <span class="stat-label">Bonus Roasts</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number">{{ flip.accusation }}</span>
+                <span class="stat-label">New Title</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="cta-box">
+        <h3>Not satisfied with this verdict?</h3>
+        <p>Submit more evidence. We love watching people dig deeper graves.</p>
+        <div class="button-group">
+            <a href="/submit-evidence" class="btn btn-evidence">Dig Deeper ⚰️</a>
+            <a href="/" class="btn btn-secondary">Run Away 🏃</a>
+        </div>
+    </div>
+
+    <div class="disclaimer">
+        <p>🎭 <strong>Remember:</strong> This is satire. Your real reputation is probably fine.</p>
+        <p>Unless it isn't. We don't know your life. But statistically? ¯\_(ツ)_/¯</p>
+    </div>
+</div>
+
+<style>
+.verdict-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.gavel {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 1rem;
+    animation: swing 2s ease-in-out infinite;
+}
+
+@keyframes swing {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+}
+
+.verdict-box {
+    background: var(--stone);
+    border: 3px solid var(--blood);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.verdict-box.guilty {
+    background: linear-gradient(135deg, var(--stone) 0%, rgba(218, 54, 51, 0.1) 100%);
+}
+
+.verdict-badge {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.verdict-label {
+    display: inline-block;
+    background: var(--blood);
+    color: var(--dark-bg);
+    padding: 0.75rem 2rem;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    border-radius: 8px;
+    text-transform: uppercase;
+    transform: rotate(-2deg);
+}
+
+.innocence-meter {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.innocence-meter .score {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.meter {
+    height: 30px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    overflow: hidden;
+    margin: 1rem 0;
+}
+
+.meter-fill {
+    height: 100%;
+    transition: width 1s ease-out;
+}
+
+.flip-section {
+    background: rgba(218, 54, 51, 0.1);
+    border-left: 4px solid var(--blood);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.flip-section h2 {
+    margin-top: 0;
+    color: var(--moon);
+}
+
+.flip-analysis {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.original-claim {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.original-claim blockquote {
+    font-style: italic;
+    color: var(--moon);
+    border-left: 3px solid var(--moon);
+    padding-left: 1rem;
+    margin: 0;
+}
+
+.damage-report ul {
+    list-style: none;
+    padding: 0;
+}
+
+.collateral-roast {
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    background: rgba(218, 54, 51, 0.1);
+    border-radius: 4px;
+    border-left: 3px solid var(--blood);
+}
+
+.conclusion {
+    text-align: center;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    margin: 2rem 0;
+}
+
+.roast-bonus {
+    font-size: 1.2rem;
+    color: var(--moon);
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--blood);
+    font-style: italic;
+}
+
+.escalation-warning {
+    text-align: center;
+    padding: 2rem;
+    background: var(--dark-bg);
+    border: 2px dashed var(--blood);
+    border-radius: 8px;
+}
+
+.escalation-warning .skull {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.stats-panel {
+    background: var(--stone);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.stat {
+    text-align: center;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
+
+.stat-number {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--moon);
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #888;
+    margin-top: 0.5rem;
+}
+
+.cta-box {
+    background: linear-gradient(135deg, var(--stone) 0%, var(--dark-bg) 100%);
+    text-align: center;
+    padding: 2rem;
+    border-radius: 8px;
+    border: 2px solid var(--blood);
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.disclaimer {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+</style>
+{% endblock %}

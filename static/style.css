@@ -821,6 +821,236 @@ input[type="text"]::placeholder {
     opacity: 0.7;
 }
 
+/* Add to the end of the file - Evidence Submission Styles */
+
+/* Evidence CTA Section */
+.evidence-cta {
+    margin: 4rem auto;
+    max-width: 600px;
+}
+
+.cta-box {
+    background: linear-gradient(135deg, var(--stone-light) 0%, var(--stone-dark) 100%);
+    border: 3px solid var(--moon-glow);
+    border-radius: 12px;
+    padding: 3rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--moon-glow), var(--blood-red), var(--moon-glow));
+}
+
+.cta-icon {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.cta-box h2 {
+    margin: 0 0 1rem;
+    color: var(--moon-glow);
+}
+
+.cta-box .section-desc {
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
+.btn-evidence {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, var(--moon-glow), var(--blood-red));
+    color: var(--bg-darker);
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn-evidence:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(240, 136, 62, 0.4);
+}
+
+/* Evidence Form Styles */
+.evidence-box {
+    max-width: 700px;
+    margin: 0 auto;
+    background: rgba(45, 51, 59, 0.5);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.warning-banner {
+    background: linear-gradient(135deg, rgba(218, 54, 51, 0.2), rgba(218, 54, 51, 0.1));
+    border: 2px solid var(--blood-red);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.warning-banner .skull {
+    font-size: 2rem;
+}
+
+.warning-banner p {
+    margin: 0 0 0.5rem;
+}
+
+.warning-banner .small {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.evidence-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.evidence-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--ghost-white);
+}
+
+.evidence-form input,
+.evidence-form select,
+.evidence-form textarea {
+    width: 100%;
+    padding: 1rem;
+    background: var(--bg-darker);
+    border: 2px solid var(--stone-light);
+    border-radius: 6px;
+    color: var(--ghost-white);
+    font-size: 1rem;
+    font-family: var(--font-body);
+    transition: border-color 0.2s;
+}
+
+.evidence-form input:focus,
+.evidence-form select:focus,
+.evidence-form textarea:focus {
+    outline: none;
+    border-color: var(--moon-glow);
+}
+
+.evidence-form small {
+    display: block;
+    margin-top: 0.5rem;
+    opacity: 0.7;
+    font-size: 0.85rem;
+}
+
+.evidence-form small .warning {
+    color: var(--blood-red);
+}
+
+.checkbox-group {
+    background: rgba(218, 54, 51, 0.1);
+    padding: 1rem;
+    border-radius: 6px;
+    border-left: 4px solid var(--blood-red);
+}
+
+.checkbox-label {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 0.75rem;
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: auto;
+    margin-top: 0.25rem;
+}
+
+.evidence-form button[type="submit"] {
+    width: 100%;
+    background: linear-gradient(135deg, var(--blood-red), #c53030);
+    color: white;
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    padding: 1.25rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: all 0.2s;
+}
+
+.evidence-form button[type="submit"]:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 25px rgba(218, 54, 51, 0.5);
+}
+
+.fine-print {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--stone-light);
+    opacity: 0.7;
+}
+
+.fine-print ul {
+    margin-top: 0.5rem;
+    padding-left: 1.5rem;
+}
+
+.fine-print li {
+    margin-bottom: 0.25rem;
+}
+
+/* Back link */
+.back-link {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.back-link a {
+    color: var(--moon-glow);
+    text-decoration: none;
+    font-size: 1.1rem;
+}
+
+.back-link a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive adjustments for evidence */
+@media (max-width: 768px) {
+    .evidence-box {
+        padding: 1.5rem;
+    }
+    
+    .warning-banner {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .cta-box {
+        padding: 2rem 1.5rem;
+    }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     h1 {

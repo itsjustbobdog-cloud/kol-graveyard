@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}KOL Graveyard{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪦</text></svg>">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="nav-brand">
+            <a href="/">🪦 KOL Graveyard</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/">🏠 Home</a></li>
+            <li><a href="/graveyard">🪦 Graveyard</a></li>
+            <li><a href="/submit-evidence">⚖️ Submit Evidence</a></li>
+        </ul>
+    </nav>
+
+    <div class="moon-glow"></div>
+    <div class="fog"></div>
+
+    <main class="content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="graveyard-footer">
+        <p>🪦 The KOL Graveyard — Where shills come to rest</p>
+        <p class="disclaimer">Built for laughs. Not financial advice. Don't sue us. 🪦</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</style>
+
+{% macro tombstone_card(resident) %}
+<div class="tombstone-card">
+    <div class="tombstone-header">
+        <span class="handle">@{{ resident.handle }}</span>
+        <span class="shill-badge {{ resident.shill_level }}">{{ resident.shill_level|upper }}</span>
+    </div>
+    
+    <div class="tombstone-stats">
+        <div class="stat">
+            <span class="stat-value">{{ resident.promo_count }}</span>
+            <span class="stat-label">Shills</span>
+        </div>
+        <div class="stat">
+            <span class="stat-value dead">{{ resident.dead_count }}</span>
+            <span class="stat-label">Dead</span>
+        </div>
+    </div>
+
+    <div class="tombstone-body">
+        <p class="roast-text">{{ resident.roast_text|truncate(150) }}</p>
+    </div>
+
+    <div class="tombstone-footer">
+        <span class="death-date">{{ resident.death_date }}</span>
+        <a href="{{ url_for('view_roast', handle=resident.handle) }}" class="btn btn-sm">View Roast →</a>
+    </div>
+</div>
+{% endmacro %}
+</html>

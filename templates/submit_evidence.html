@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Submit Evidence - KOL Graveyard{% endblock %}
+
+{% block content %}
+<div class="graveyard-container">
+    <header class="graveyard-header">
+        <h1 class="creepster">⚖️ Submit Evidence</h1>
+        <p class="subtitle">Think you can prove your innocence? Let's see what you've got.</p>
+    </header>
+
+    <div class="evidence-box">
+        <div class="warning-banner">
+            <span class="skull">💀</span>
+            <p><strong>FAIR WARNING:</strong> The more you try to prove you're innocent, the worse this gets.</p>
+            <p class="small">Every piece of "evidence" you submit will be analyzed, flipped, and weaponized against you.</p>
+        </div>
+
+        <form method="POST" action="/submit-evidence" class="evidence-form">
+            <div class="form-group">
+                <label for="handle">Your X Handle</label>
+                <input type="text" id="handle" name="handle" placeholder="@yourhandle" required>
+                <small>Don't worry, we already know who you are.</small>
+            </div>
+
+            <div class="form-group">
+                <label for="evidence_type">Type of "Evidence"</label>
+                <select id="evidence_type" name="evidence_type" required>
+                    <option value="">Select your alibi...</option>
+                    <option value="screenshots">📸 Screenshots (that definitely aren't cropped)</option>
+                    <option value="statements">📝 Written Statement (lawyer-approved fiction)</option>
+                    <option value="transactions">💸 Transaction Records (only shows the clean wallet)</option>
+                    <option value="contracts">📄 Contracts (with all the bad parts redacted)</option>
+                    <option value="testimonials">👥 Community Testimonials (paid for, unmarked)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="innocence_claim">Your Innocence Claim</label>
+                <textarea id="innocence_claim" name="innocence_claim" rows="3" placeholder="I swear I'm innocent because..." required></textarea>
+                <small>The more words you use, the guiltier you look.</small>
+            </div>
+
+            <div class="form-group">
+                <label for="evidence_text">Describe Your "Proof"</label>
+                <textarea id="evidence_text" name="evidence_text" rows="5" placeholder="Paste your evidence here..."
+                    oninput="updateCharCount(this)"></textarea>
+                <small id="char-count">Characters: 0 | <span class="warning">Under 100 = suspicious. Over 500 = definitely guilty.</span></small>
+            </div>
+
+            <div class="form-group">
+                <label for="evidence_url">Link to Evidence (Optional)</label>
+                <input type="url" id="evidence_url" name="evidence_url" placeholder="https://...">
+                <small>Links to Google Docs titled 'My Defense' will be auto-rejected.</small>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" required>
+                    <span>I understand that submitting this evidence will likely make my roast 10x worse</span>
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-evidence">
+                <span class="btn-text">Submit Evidence (Dig Your Own Grave)</span>
+                <span class="btn-icon">⚰️</span>
+            </button>
+        </form>
+
+        <div class="fine-print">
+            <p>By submitting evidence, you agree that:</p>
+            <ul>
+                <li>We will analyze everything you submit</li>
+                <li>We reserve the right to mock your defense strategy</li>
+                <li>Your evidence becomes public property of the graveyard</li>
+                <li>No refunds on damaged reputations</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="back-link">
+        <a href="/">← Back to the Graveyard Entrance</a>
+    </div>
+</div>
+
+<script>
+function updateCharCount(textarea) {
+    const count = textarea.value.length;
+    const countEl = document.getElementById('char-count');
+    let warning = '';
+    
+    if (count < 50) {
+        warning = 'Suspiciously short. What are you hiding?';
+    } else if (count > 500) {
+        warning = 'Over-explaining = guilt. Nice try.';
+    } else if (count > 200) {
+        warning = 'Getting defensive... escalation imminent.';
+    }
+    
+    countEl.innerHTML = `Characters: ${count} | <span class="warning">${warning}</span>`;
+}
+</script>
+{% endblock %}

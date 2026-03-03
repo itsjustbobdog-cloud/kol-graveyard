@@ -101,6 +101,19 @@ def init_db():
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS evidence (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            handle TEXT NOT NULL,
+            evidence_type TEXT NOT NULL,
+            evidence_text TEXT,
+            evidence_url TEXT,
+            innocence_claim TEXT,
+            roast_escalation INTEGER DEFAULT 1,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (handle) REFERENCES roasts(handle)
+        )
+    ''')
     conn.commit()
     conn.close()
 
@@ -389,6 +402,161 @@ def api_graveyard():
         if isinstance(resident.get('specific_insults'), str):
             resident['specific_insults'] = json.loads(resident['specific_insults'])
     return jsonify(residents)
+
+@app.route('/submit-evidence', methods=['GET', 'POST'])
+def submit_evidence():
+    """Submit 'proof of innocence' - which we flip into worse roasts"""
+    if request.method == 'POST':
+        handle = request.form.get('handle', '').strip().lstrip('@')
+        evidence_type = request.form.get('evidence_type', '')
+        evidence_text = request.form.get('evidence_text', '')
+        evidence_url = request.form.get('evidence_url', '')
+        innocence_claim = request.form.get('innocence_claim', '')
+        
+        if not handle:
+            return jsonify({'error': 'Need a handle to roast harder'}), 400
+        
+        # THE FLIP: Analyze their "innocence" and make it worse
+        flip_result = analyze_evidence_and_flip(handle, evidence_type, evidence_text, innocence_claim)
+        
+        # Save the evidence
+        conn = get_db()
+        c = conn.cursor()
+        c.execute('''
+            INSERT INTO evidence (handle, evidence_type, evidence_text, evidence_url, innocence_claim, roast_escalation)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', (handle.lower(), evidence_type, evidence_text, evidence_url, innocence_claim, flip_result['escalation_level']))
+        conn.commit()
+        conn.close()
+        
+        # Update the roast with the flipped analysis
+        update_roast_with_flip(handle, flip_result)
+        
+        return render_template('evidence_result.html', 
+                              handle=handle, 
+                              flip=flip_result,
+                              original_claim=innocence_claim)
+    
+    return render_template('submit_evidence.html')
+
+def analyze_evidence_and_flip(handle, evidence_type, evidence_text, innocence_claim):
+    """Analyze their 'proof of innocence' and weaponize it against them"""
+    
+    # More evidence = worse roast (the paradox)
+    evidence_length = len(evidence_text) if evidence_text else 0
+    evidence_word_count = len(evidence_text.split()) if evidence_text else 0
+    
+    # Calculate escalation based on how hard they tried
+    escalation_level = 1
+    if evidence_length > 500:
+        escalation_level += 2  # Long defense = guilt
+    if evidence_word_count > 100:
+        escalation_level += 1  # Too many words = overcompensating
+    if 'transparency' in innocence_claim.lower():
+        escalation_level += 2  # Mentioning transparency = definitely hiding something
+    if 'honest' in innocence_claim.lower():
+        escalation_level += 1  # Claiming honesty = red flag
+    if '#ad' in (evidence_text or ''):
+        escalation_level += 3  # Used #ad in defense = self-own
+    if 'not sponsored' in innocence_claim.lower():
+        escalation_level += 2  # "Not sponsored" = definitely was
+    if evidence_url:
+        escalation_level += 1  # Linked proof = try-hard
+    
+    # Generate the flip based on evidence type
+    flips = {
+        'screenshots': {
+            'title': '"Receipts" Backfired',
+            'analysis': 'Shared screenshots as evidence. The timestamps reveal you posted the "unbiased review" 47 minutes after receiving the wire transfer.',
+            'roast_addition': f'@{handle} tried to use screenshots as an alibi. Blockchain transactions don\'t lie, but you do.',
+            'accusation': 'Receipts-based defense'
+        },
+        'statements': {
+            'title': 'The "Trust Me Bro" Defense',
+            'analysis': 'Provided a written statement claiming innocence. Studies show 93% of written defenses contain active lies. You\'re part of that 93%.',
+            'roast_addition': f'@{handle} wrote a long post about integrity. Thesaurus abuse doesn\'t erase paid promotions.',
+            'accusation': 'Word salad defense'
+        },
+        'transactions': {
+            'title': 'Financial Transparency Trap',
+            'analysis': 'Shared transaction records to prove "no payment." However, the receiving wallet is registered to a shell company in the Seychelles. Nice try.',
+            'roast_addition': f'@{handle} showed us their "clean" books. Forgot about the offshore wallet. Amateur.',
+            'accusation': 'Shell company enthusiast'
+        },
+        'contracts': {
+            'title': 'Self-Incrimination Document',
+            'analysis': 'Uploaded a contract to prove legitimacy. Page 4, Section 3: "Influencer agrees to promote token for 6 months." You played yourself.',
+            'roast_addition': f'@{handle} uploaded the smoking gun. Contract? More like confession.',
+            'accusation': 'Contractual shill'
+        },
+        'testimonials': {
+            'title': 'Fake Friends, Real Promotion',
+            'analysis': 'Submitted testimonials from "satisfied community members." All accounts created within the last 48 hours. All follow you first. All deleted after posting.',
+            'roast_addition': f'@{handle}\'s testimonials came from burner accounts. The blockchain remembers, even when bots don\'t.',
+            'accusation': 'Testimonial fraudster'
+        }
+    }
+    
+    flip_template = flips.get(evidence_type, {
+        'title': 'Generic Guilt Confirmed',
+        'analysis': 'Submitted evidence of "innocence." In 100% of cases, this level of defensive posting correlates with hidden paid promotions.',
+        'roast_addition': f'@{handle} tried to prove innocence. The effort itself is the crime.',
+        'accusation': 'Over-defensive suspect'
+    })
+    
+    # Calculate collateral damage score
+    collateral_roasts = [
+        f"@{handle} brought receipts. Unfortunately, they're all from the store you were paid to promote.",
+        f"@{handle}\'s defense strategy: Distract with volume, hope nobody reads.",
+        f"@{handle} tried to clear their name. Added 3 more counts of suspicious behavior instead.",
+        f"@{handle}: 'I have proof!' The proof: Screenshots with your own tweets cropped out.",
+        f"@{handle}\'s innocence plea had more holes than the projects they promoted.",
+        f"@{handle} built a case for innocence. The jury (us) finds you guilty of trying too hard.",
+        f"@{handle}\'s evidence binder is thick. Almost as thick as the check they cashed.",
+        f"@{handle} said 'check the receipts.' We did. You\'re on sale for $0.99 and clearance.",
+    ]
+    
+    selected_collateral = random.sample(collateral_roasts, min(escalation_level, len(collateral_roasts)))
+    
+    return {
+        'escalation_level': escalation_level,
+        'flip_title': flip_template['title'],
+        'flip_analysis': flip_template['analysis'],
+        'roast_addition': flip_template['roast_addition'],
+        'accusation': flip_template['accusation'],
+        'collateral_roasts': selected_collateral,
+        'innocence_score': max(0, 100 - (escalation_level * 20)),  # 100 = innocent, 0 = confirmed shill
+        'verdict': 'GUILTY OF TRYING TOO HARD' if escalation_level > 2 else 'SUSPICIOUSLY DEFENSIVE',
+        'conclusion': f"Your 'evidence' added {escalation_level} new charges to your record."
+    }
+
+def update_roast_with_flip(handle, flip_result):
+    """Update existing roast with the flipped evidence analysis"""
+    conn = get_db()
+    c = conn.cursor()
+    
+    # Get current roast
+    c.execute('SELECT * FROM roasts WHERE handle = ?', (handle.lower(),))
+    row = c.fetchone()
+    
+    if row:
+        roast = dict(row)
+        current_text = roast['roast_text']
+        current_insults = json.loads(roast['specific_insults']) if roast['specific_insults'] else []
+        
+        # Append the flip
+        updated_text = f"{current_text}\n\n📎 EVIDENCE ANALYSIS:\n{flip_result['roast_addition']}"
+        current_insults.extend(flip_result['collateral_roasts'])
+        
+        # Update
+        c.execute('''
+            UPDATE roasts 
+            SET roast_text = ?, specific_insults = ?, dead_count = dead_count + ?
+            WHERE handle = ?
+        ''', (updated_text, json.dumps(current_insults[:5]), flip_result['escalation_level'], handle.lower()))
+        conn.commit()
+    
+    conn.close()
 
 @app.route('/health')
 def health_check():

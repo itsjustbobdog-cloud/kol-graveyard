@@ -1019,6 +1019,612 @@ input[type="text"]::placeholder {
     margin-bottom: 0.25rem;
 }
 
+/* New Tombstone Styles - Actual Stone Look */
+
+.tombstone-section {
+    margin: 4rem auto;
+    max-width: 500px;
+    perspective: 1000px;
+}
+
+.tombstone-wrapper {
+    position: relative;
+    transform-style: preserve-3d;
+}
+
+.tombstone-shape {
+    position: relative;
+    width: 100%;
+    background: linear-gradient(
+        145deg,
+        #4a4a4a 0%,
+        #3a3a3a 20%,
+        #2d2d2d 50%,
+        #1f1f1f 100%
+    );
+    border-radius: 140px 140px 0 0;
+    border: 6px solid #1a1a1a;
+    border-bottom: 12px solid #0d0d0d;
+    box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.6),
+        inset 0 5px 20px rgba(255, 255, 255, 0.1),
+        inset 0 -10px 30px rgba(0, 0, 0, 0.5),
+        0 0 0 3px #2d2d2d;
+    padding: 3rem 2rem 2rem;
+    text-align: center;
+}
+
+/* Stone texture overlay */
+.stone-texture {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 140px 140px 0 0;
+    background: 
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.03) 2px,
+            rgba(0, 0, 0, 0.03) 4px
+        );
+    pointer-events: none;
+}
+
+.tombstone-arch {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(145deg, #3a3a3a, #1f1f1f);
+    border: 4px solid #1a1a1a;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 
+        0 5px 20px rgba(0, 0, 0, 0.5),
+        inset 0 2px 10px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+.skull-icon {
+    font-size: 3rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.tombstone-header {
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.rip-text {
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #c0c0c0;
+    text-shadow: 
+        2px 2px 4px rgba(0, 0, 0, 0.8),
+        0 0 10px rgba(192, 192, 192, 0.3);
+    display: block;
+    letter-spacing: 0.3em;
+}
+
+.cross-decoration {
+    font-size: 2rem;
+    color: rgba(255, 255, 255, 0.3);
+    margin-top: 0.5rem;
+}
+
+.deceased-info {
+    margin: 2rem 0;
+    padding: 1.5rem 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+}
+
+.deceased-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #e0e0e0;
+    margin: 0 0 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    letter-spacing: 0.1em;
+}
+
+.deceased-handle {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    color: var(--moon-glow);
+    margin: 0;
+    opacity: 0.9;
+}
+
+.deceased-title {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
+.life-dates {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+}
+
+.date-label {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.date-value {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #c0c0c0;
+}
+
+.date-value.dead-count {
+    color: var(--blood-red);
+    text-shadow: 0 0 10px rgba(218, 54, 51, 0.4);
+}
+
+.date-separator {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.epitaph-box {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    border: 1px solid rgba(192, 192, 192, 0.2);
+    position: relative;
+}
+
+.epitaph-quote {
+    font-size: 2rem;
+    color: rgba(192, 192, 192, 0.4);
+    font-family: Georgia, serif;
+}
+
+.epitaph-text {
+    font-family: Georgia, serif;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #d0d0d0;
+    font-style: italic;
+    margin: 1rem 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.tombstone-footer {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.wreath {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.7;
+}
+
+.death-date {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: 'Cinzel', serif;
+}
+
+.tombstone-base {
+    height: 60px;
+    background: linear-gradient(
+        180deg,
+        #1a1a1a 0%,
+        #0d0d0d 100%
+    );
+    border-radius: 0 0 10px 10px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.grass-patch {
+    position: absolute;
+    top: -15px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.5rem;
+}
+
+/* Updated Roast Display Styles */
+
+.roast-content {
+    margin: 4rem auto;
+    max-width: 800px;
+}
+
+.roast-box {
+    background: linear-gradient(145deg, rgba(45, 51, 59, 0.8), rgba(33, 38, 45, 0.9));
+    border: 2px solid rgba(240, 136, 62, 0.3);
+    border-radius: 12px;
+    padding: 3rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.roast-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid rgba(240, 136, 62, 0.2);
+}
+
+.roast-title {
+    font-family: 'Creepster', cursive;
+    font-size: 2.5rem;
+    margin: 0;
+    color: var(--moon-glow);
+    text-shadow: 0 0 20px rgba(240, 136, 62, 0.4);
+}
+
+.shill-badge {
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.shill-badge.LOW {
+    background: rgba(63, 185, 80, 0.2);
+    border: 2px solid #3fb950;
+    color: #3fb950;
+}
+
+.shill-badge.MEDIUM {
+    background: rgba(240, 136, 62, 0.2);
+    border: 2px solid var(--moon-glow);
+    color: var(--moon-glow);
+}
+
+.shill-badge.HIGH {
+    background: rgba(218, 54, 51, 0.2);
+    border: 2px solid var(--blood-red);
+    color: var(--blood-red);
+}
+
+.shill-badge.EXTREME {
+    background: linear-gradient(135deg, rgba(218, 54, 51, 0.3), rgba(240, 136, 62, 0.2));
+    border: 2px solid var(--blood-red);
+    color: var(--moon-glow);
+    text-shadow: 0 0 10px var(--blood-red);
+}
+
+.roast-main {
+    font-size: 1.2rem;
+    line-height: 2;
+    color: var(--ghost-white);
+    margin-bottom: 2rem;
+}
+
+.roast-main br {
+    display: block;
+    content: "";
+    margin-top: 1rem;
+}
+
+.crimes-section {
+    margin-top: 2.5rem;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    border-left: 4px solid var(--blood-red);
+}
+
+.crimes-section h3 {
+    font-family: 'Creepster', cursive;
+    font-size: 1.8rem;
+    color: var(--blood-red);
+    margin: 0 0 1.5rem;
+}
+
+.crimes-list {
+    list-style: none;
+    padding: 0;
+}
+
+.crimes-list li {
+    padding: 1rem 1rem 1rem 3rem;
+    margin-bottom: 0.75rem;
+    background: rgba(218, 54, 51, 0.1);
+    border-radius: 6px;
+    position: relative;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+.crimes-list li::before {
+    content: '✗';
+    position: absolute;
+    left: 1rem;
+    color: var(--blood-red);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.final-words {
+    margin-top: 2.5rem;
+    text-align: center;
+    padding: 2rem;
+    background: rgba(240, 136, 62, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(240, 136, 62, 0.3);
+}
+
+.final-words h4 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    color: var(--moon-glow);
+    margin: 0 0 1rem;
+}
+
+.epitaph-line {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0.5rem 0;
+}
+
+/* Stats Section */
+
+.stats-section {
+    margin: 4rem auto;
+    max-width: 800px;
+}
+
+.stats-section .section-title {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1.5rem;
+}
+
+.stat-tile {
+    background: linear-gradient(145deg, rgba(45, 51, 59, 0.8), rgba(33, 38, 45, 0.9));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-tile:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.stat-tile.wide {
+    grid-column: span 2;
+}
+
+.stat-tile.dead {
+    border-color: rgba(218, 54, 51, 0.4);
+    background: linear-gradient(145deg, rgba(218, 54, 51, 0.1), rgba(33, 38, 45, 0.9));
+}
+
+.stat-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.stat-tile .stat-value {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--ghost-white);
+    display: block;
+}
+
+.stat-tile.dead .stat-value {
+    color: var(--blood-red);
+    text-shadow: 0 0 10px rgba(218, 54, 51, 0.4);
+}
+
+.stat-tile .stat-label {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 0.5rem;
+    display: block;
+}
+
+/* Share Section */
+
+.share-section {
+    margin: 4rem auto;
+    max-width: 600px;
+    text-align: center;
+}
+
+.share-desc {
+    margin-bottom: 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.share-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+.share-btn.twitter {
+    background: #000;
+    color: #fff;
+    border: 1px solid #333;
+}
+
+.share-btn.twitter:hover {
+    background: #1a1a1a;
+}
+
+.share-btn.telegram {
+    background: #0088cc;
+    color: #fff;
+}
+
+.share-btn.telegram:hover {
+    background: #0099e6;
+}
+
+.share-btn.copy {
+    background: var(--stone-light);
+    color: var(--ghost-white);
+}
+
+.share-btn.copy:hover {
+    background: var(--moon-glow);
+    color: var(--bg-darker);
+}
+
+.share-url-box {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.share-url-box code {
+    color: var(--moon-glow);
+    word-break: break-all;
+    font-size: 0.9rem;
+}
+
+/* Bury Another Section */
+
+.bury-another {
+    margin: 4rem auto;
+    max-width: 500px;
+    text-align: center;
+}
+
+.inline-form {
+    margin-top: 1.5rem;
+}
+
+.inline-input-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(45, 51, 59, 0.5);
+    border: 2px solid var(--stone-light);
+    border-radius: 12px;
+    padding: 0.5rem;
+}
+
+.inline-input-group input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 0.75rem;
+    color: var(--ghost-white);
+    font-size: 1.1rem;
+}
+
+.inline-input-group input:focus {
+    outline: none;
+}
+
+.inline-input-group .at-sign {
+    font-size: 1.2rem;
+    color: var(--stone-text);
+    padding: 0 0.5rem;
+}
+
+.inline-input-group .bury-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+}
+
+/* Grave Footer */
+
+.grave-footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    margin-top: 4rem;
+}
+
+.grave-footer p {
+    margin: 0.5rem 0;
+}
+
+.grave-footer .disclaimer {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Nav styling */
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.nav-link {
+    color: var(--moon-glow);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.nav-link:hover {
+    color: var(--blood-red);
+}
+
 /* Back link */
 .back-link {
     text-align: center;
@@ -1086,5 +1692,55 @@ input[type="text"]::placeholder {
     .bury-btn {
         width: 100%;
         justify-content: center;
+    }
+    
+    /* Mobile tombstone adjustments */
+    .tombstone-shape {
+        border-radius: 80px 80px 0 0;
+        padding: 2rem 1.5rem 1.5rem;
+    }
+    
+    .tombstone-arch {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .skull-icon {
+        font-size: 2rem;
+    }
+    
+    .rip-text {
+        font-size: 2rem;
+    }
+    
+    .deceased-name {
+        font-size: 1.4rem;
+    }
+    
+    .roast-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .roast-title {
+        font-size: 1.8rem;
+    }
+    
+    .roast-box {
+        padding: 1.5rem;
+    }
+    
+    .roast-main {
+        font-size: 1rem;
+    }
+    
+    .stat-tile.wide {
+        grid-column: span 1;
+    }
+    
+    .life-dates {
+        flex-direction: column;
+        gap: 0.5rem;
     }
 }

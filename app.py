@@ -72,7 +72,87 @@ ROAST_TEMPLATES = {
         "Deleted the promo tweet after the project rugged. The blockchain doesn't forget, but they tried.",
         "Promised 'alpha' in paid threads. Delivered exit liquidity for founders instead.",
         "Shilled a DeFi project that got hacked. 'Bank-level security' they said. Bank-level robbery, more like.",
+        "Promoted 3 competitors in the same week. Loyalty? Never heard of it.",
+        "Called a token 'the next Ethereum' during the paid promo. It's currently worth less than your dignity.",
+        "Every 'gem' they found turned out to be a rock. A heavy rock. That sank to zero.",
+        "Their investment thesis: 'They paid me.'",
+        "Built a reputation on being 'early.' Really they were just first in line at the bank.",
+        "Their thread quality: 100%. The projects' quality: -100%. Math checks out.",
+        "Hasn't met a token sale they didn't like. Your money? Not so much.",
+        "Promised a thread 'tomorrow' for three weeks. The project rugged before they delivered.",
+        "Shilled a gaming token. The game doesn't exist yet. Neither do the returns.",
+        "Their 'research' consists of checking if the wire cleared.",
+        "Every project they promote goes to the moon. Problem: It's the wrong moon.",
+        "Has a sixth sense for scams. Unfortunately, it's the sense that tells them which ones to promote.",
     ],
+    'long_roasts': {
+        'extreme': [
+            """{handle} enters the chat like they own the place. Spoiler: They don't own anything except {promo_count} bags of regret. 
+
+Their playbook is simple: Find a dying project → Promise it's revolutionary → Pocket the check → Watch it crater → Repeat. 
+
+{dead_count} projects have died on their watch. Not casualties. Victims. Each one sponsored, each one doomed from the moment they hit 'send tweet.'
+
+They call it early. We call it paid. You call it whatever you want, but your wallet calls it 'ouch.'
+
+The blockchain remembers. The graveyard grows. And {handle}? Still shilling. Still pretending. Still cashing checks while their followers hold the bags.""",
+
+            """Meet {handle}: Web3's most prolific project mortician. They don't just kill projects—they bury them with receipts.
+
+Their career by the numbers: {promo_count} paid promotions. {dead_count} confirmed disasters. That's a success rate that would get you fired from anywhere except influencer marketing.
+
+Every thread starts the same: 'I don't usually do this, but...' Every thread ends the same: Project dead, followers rekt, handle richer. The cycle continues.
+
+They called themselves researchers. Analysts. Early adopters. Reality check: They're salespeople. The worst kind—ones who sell products that don't exist to people who can't afford to lose.
+
+The graveyard has a special place for {handle}. Front row. Center stone. Carved with every project name they helped kill. Rest in pieces, credibility. You died for a $5k retweet.""",
+
+            """{handle} didn't just shill projects. They built a career on the corpses of dead tokens. 
+
+Look at the timeline. {promo_count} promotional threads. Each one carefully crafted to sound authentic while being anything but. The language is always the same—'game-changer,' 'undervalued,' 'sleeping giant.' The projects? Always the same too—dead within months.
+
+{dead_count} disasters later, what's changed? Nothing. They're still posting. Still promising. Still taking money to promote anything with a pulse and a marketing budget.
+
+The worst part isn't that they shill. It's that they act surprised. 'How could I have known?' they say. We could have known. We did know. Anyone with two brain cells and a wallet they wanted to keep could see these were destined for zero.
+
+But {handle} kept posting. Kept promoting. Kept collecting checks while their followers collected bags of worthless tokens.
+
+Welcome to the graveyard, {handle}. Your tombstone is already here—we've been waiting for you to notice.""",
+        ],
+        'high': [
+            """{handle} treats social media like a classifieds section. {promo_count} ads disguised as opinions. {dead_count} projects that didn't survive the spotlight.
+
+They've mastered the art of looking authentic while being anything but. Every thread carefully calibrated. Every 'just my thoughts' actually a sales pitch with a human face.
+
+The pattern is clear: Shill → Get paid → Watch it die → Shill again. No pause for reflection. No learning from mistakes. Just another check, another project, another set of followers left holding worthless tokens.
+
+Respect the hustle? Hard to respect something that leaves this many victims.""",
+
+            """{handle}'s timeline reads like a graveyard tour guide. 'Over here we have Project X, rugged in March. Over there, Token Y, died in April.'
+
+{promo_count} promotions. {dead_count} disasters. At what point does 'bad luck' become 'bad judgment'? At what point do we stop calling them an influencer and start calling them a warning?
+
+The answer: Right now. Welcome to your final resting place.""",
+        ],
+        'medium': [
+            """{handle} walks the line between 'influencer' and 'infomercial host.' {promo_count} promotions, {dead_count} casualties. 
+
+Not the worst we've seen. Not the best either. They disclose sometimes, hide it others. The result is a timeline that looks like an ad break with occasional personality.
+
+Is it malicious? Probably not. Is it helpful to anyone following their 'recommendations'? Also probably not. 
+
+Bury them, but make it quick. They've got another sponsored thread to post.""",
+        ],
+        'low': [
+            """{handle} barely qualifies for the graveyard. {promo_count} promotions—barely a blip on the radar. {dead_count} disasters—statistically insignificant.
+
+Are they perfect? No. Have they taken money to promote things? Yes. But compared to the monsters in this graveyard? {handle} is practically a saint.
+
+Still here, though. Still buried. Still guilty of being just shilly enough to notice, just subtle enough to think they got away with it.
+
+They didn't.""",
+        ],
+    },
     'final_words': [
         "Here lies {handle}. Believer in too many 'revolutionary' projects.",
         "Rest in pieces, {handle}'s credibility.",
@@ -80,6 +160,8 @@ ROAST_TEMPLATES = {
         "They came, they shilled, they exited.",
         "Paid promotions don't lie. {handle} does.",
         "In memes we trust. In paid promos? Not so much.",
+        "{handle}: Early to the pump, late to the dump.",
+        "Here rests {handle}'s integrity. Died for engagement.",
     ]
 }
 
@@ -168,34 +250,54 @@ def generate_roast(handle, promo_count, dead_count, follower_count):
     else:
         frequency = 0
     
-    # Select main roast
-    if level == 'none':
-        main_roast = f"@{handle} appears to be clean. Either we're missing something, or they actually have integrity. Suspicious."
-    else:
-        templates = ROAST_TEMPLATES['shill_level'].get(level, ROAST_TEMPLATES['shill_level']['medium'])
-        main_roast = random.choice(templates).format(
-            handle=f"@{handle}",
-            promo_count=promo_count,
-            dead_count=dead_count,
-            alive_count=alive_count,
-            frequency=frequency
-        )
+    # Get long roast based on level
+    long_roast_template = random.choice(ROAST_TEMPLATES['long_roasts'].get(level, ROAST_TEMPLATES['long_roasts']['medium']))
     
-    # Add specific insults
-    num_insults = min(3, len(ROAST_TEMPLATES['specific_insults']))
-    selected_insults = random.sample(ROAST_TEMPLATES['specific_insults'], num_insults)
+    # Format the long roast
+    main_roast = long_roast_template.format(
+        handle=f"@{handle}",
+        promo_count=promo_count,
+        dead_count=dead_count,
+        alive_count=alive_count,
+        frequency=frequency
+    )
     
-    # Final words (epitaph)
-    epitaph = random.choice(ROAST_TEMPLATES['final_words']).format(handle=f"@{handle}")
+    # Traditional short roast for tombstone display
+    short_templates = ROAST_TEMPLATES['shill_level'].get(level, ROAST_TEMPLATES['shill_level']['medium'])
+    short_roast = random.choice(short_templates).format(
+        handle=f"@{handle}",
+        promo_count=promo_count,
+        dead_count=dead_count,
+        alive_count=alive_count,
+        frequency=frequency
+    )
+    
+    # Get 5 specific insults
+    insult_pool = ROAST_TEMPLATES['specific_insults'].copy()
+    random.shuffle(insult_pool)
+    selected_insults = insult_pool[:5]
+    
+    # Format them with handle
+    formatted_insults = []
+    for insult in selected_insults:
+        formatted_insult = insult.replace('{handle}', f"@{handle}")
+        formatted_insult = formatted_insult.replace('{promo_count}', str(promo_count))
+        formatted_insult = formatted_insult.replace('{dead_count}', str(dead_count))
+        formatted_insults.append(formatted_insult)
+    
+    # Multiple epitaphs for variety
+    epitaphs = random.sample(ROAST_TEMPLATES['final_words'], min(3, len(ROAST_TEMPLATES['final_words'])))
+    formatted_epitaphs = [e.format(handle=f"@{handle}") for e in epitaphs]
     
     return {
-        'main_roast': main_roast,
-        'specific_insults': selected_insults,
-        'epitaph': epitaph,
+        'main_roast': main_roast,  # The long savage roast
+        'short_roast': short_roast,  # For tombstone display
+        'specific_insults': formatted_insults,
+        'epitaphs': formatted_epitaphs,
         'shill_level': level,
         'promo_count': promo_count,
         'dead_count': dead_count,
-        'follower_count': follower_count
+        'follower_count': follower_count,
     }
 
 def mock_analyze_x_profile(handle):
@@ -228,6 +330,15 @@ def save_roast(handle, display_name, follower_count, promo_count, dead_count, ro
     c = conn.cursor()
     death_date = datetime.now().strftime('%Y-%m-%d')
     
+    # Combine both roasts and all data into one JSON structure
+    full_roast_data = {
+        'main_roast': roast_data.get('main_roast', ''),
+        'short_roast': roast_data.get('short_roast', ''),
+        'specific_insults': roast_data.get('specific_insults', []),
+        'epitaphs': roast_data.get('epitaphs', []),
+        'shill_level': roast_data.get('shill_level', 'medium')
+    }
+    
     try:
         c.execute('''
             INSERT OR REPLACE INTO roasts 
@@ -240,7 +351,7 @@ def save_roast(handle, display_name, follower_count, promo_count, dead_count, ro
             promo_count,
             dead_count,
             roast_data['main_roast'],
-            json.dumps(roast_data['specific_insults']),
+            json.dumps(full_roast_data),
             death_date
         ))
         conn.commit()
